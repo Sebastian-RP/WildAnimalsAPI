@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WildAnimalsAPI.Persistence;
 
 namespace MarvelPersonalProject.Controllers
 {
@@ -14,38 +16,43 @@ namespace MarvelPersonalProject.Controllers
     [ApiController]
     public class LogInController : ControllerBase
     {
-        public IConfiguration _configuration;
+        private readonly IConfiguration _Configuration;
+        private readonly ApplicationDbContext _DbContext;
 
-        public LogInController(IConfiguration configuration)
+        public LogInController(
+            IConfiguration Configuration,
+            ApplicationDbContext Dbcontext
+            )
         {
-            _configuration = configuration;
+            _Configuration = Configuration;
+            _DbContext = Dbcontext;
         }
 
-        [HttpPost]
-        public ActionResult<string> SingIn([FromBody] Object optData)
+        [HttpPost("SignIn")]
+        public async Task<ActionResult> SingIn([FromBody] User currentUser)
         {
-            var data =  JsonConvert.DeserializeObject<dynamic>(optData.ToString());
-
-            var userName = data.UserName.ToString();
-            var passWord = data.PassWord.ToString();
-
-            //intermedio aca es donde debe ir a la base de datos y validar, si retorna data o no, valida en el if de abajo
-
-            if (userName == null)
+            if (currentUser == null)
             {
-                return NoContent();
+                return BadRequest("Debe agregar la informacion del usuario");
             }
 
-            var jwt = _configuration.GetSection("Jwt").Get<Jwt>();
+            User existUser = await _DbContext.Users.FirstOrDefaultAsync(u => u.UserName == currentUser.UserName && u.PassWord == currentUser.PassWord);
+
+            if (existUser == null)
+            {
+                return BadRequest("El usuario o contraseña no coinciden");
+            }
+
+            var jwt = _Configuration.GetSection("Jwt").Get<Jwt>();
 
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim("Id", "miIdUser"), //recordar agregar el id dinamico
-                new Claim("UserName", "miUserName"), //recordar agregar el UserName dinamico
-                new Claim("Rol", "standar"), //recordar poner el rol dinamico
+                new Claim("Id", existUser.Id.ToString()),
+                new Claim("UserName", existUser.UserName),
+                new Claim("Rol", existUser.Rol),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key));
@@ -62,6 +69,21 @@ namespace MarvelPersonalProject.Controllers
             var bearerToken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return Ok(bearerToken);
+        }
+
+        [HttpPost("SignUp")]
+        public async Task<ActionResult> SingUp([FromBody] User newUser)
+        {
+            //validar que no exista antes de crear
+            if (newUser == null)
+            {
+                return BadRequest("Debe agregar la informacion del nuevo usuario");
+            }
+
+            _DbContext.Users.Add(newUser);
+            await _DbContext.SaveChangesAsync();
+
+            return Ok();
         }
 
         [HttpGet("best")]
