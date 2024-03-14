@@ -1,4 +1,5 @@
-﻿using MarvelPersonalProject.Models;
+﻿using AutoMapper;
+using MarvelPersonalProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WildAnimalsAPI.Models.DTO;
 using WildAnimalsAPI.Persistence;
 
 namespace MarvelPersonalProject.Controllers
@@ -18,18 +20,21 @@ namespace MarvelPersonalProject.Controllers
     {
         private readonly IConfiguration _Configuration;
         private readonly ApplicationDbContext _DbContext;
+        private readonly IMapper _Mapper;
 
         public LogInController(
             IConfiguration Configuration,
-            ApplicationDbContext Dbcontext
+            ApplicationDbContext Dbcontext,
+            IMapper Mapper
             )
         {
             _Configuration = Configuration;
             _DbContext = Dbcontext;
+            _Mapper = Mapper;
         }
 
         [HttpPost("SignIn")]
-        public async Task<ActionResult> SingIn([FromBody] User currentUser)
+        public async Task<ActionResult> SingIn([FromBody] SignInUser currentUser)
         {
             if (currentUser == null)
             {
@@ -72,15 +77,23 @@ namespace MarvelPersonalProject.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<ActionResult> SingUp([FromBody] User newUser)
+        public async Task<ActionResult> SingUp([FromBody] CreateUserDto newUser)
         {
-            //validar que no exista antes de crear
             if (newUser == null)
             {
                 return BadRequest("Debe agregar la informacion del nuevo usuario");
             }
 
-            _DbContext.Users.Add(newUser);
+            var existUser = await _DbContext.Users.AnyAsync(x => x.UserName == newUser.UserName);
+
+            if (existUser)
+            {
+                return BadRequest("El nombre de usuario a crear ya existe");
+            }
+
+            User NewUserMapped = _Mapper.Map<User>(newUser);
+
+            _DbContext.Users.Add(NewUserMapped);
             await _DbContext.SaveChangesAsync();
 
             return Ok();
