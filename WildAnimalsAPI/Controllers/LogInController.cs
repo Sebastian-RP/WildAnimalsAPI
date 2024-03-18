@@ -103,7 +103,7 @@ namespace MarvelPersonalProject.Controllers
         [Authorize]
         public ActionResult<string> devuelve()
         {
-            return Ok("aca hay buena información ---");
+            return Ok();
         }
     }
 }
