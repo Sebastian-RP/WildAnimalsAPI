@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WildAnimalsAPI.Persistence;
 
@@ -10,9 +11,11 @@ using WildAnimalsAPI.Persistence;
 namespace WildAnimalsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240321015140_edit-many-to-many-AnimalContinent2")]
+    partial class editmanytomanyAnimalContinent2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,7 +124,7 @@ namespace WildAnimalsAPI.Migrations
 
                     b.HasIndex("ContinentId");
 
-                    b.ToTable("AnimalContinents");
+                    b.ToTable("AnimalContinent");
                 });
 
             modelBuilder.Entity("WildAnimalsAPI.Models.Continent", b =>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WildAnimalsAPI.Models;
+using WildAnimalsAPI.Models.DTO;
 using WildAnimalsAPI.Persistence;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,7 +11,7 @@ using WildAnimalsAPI.Persistence;
 namespace WildAnimalsAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class ContinentController : ControllerBase
     {
@@ -47,6 +48,16 @@ namespace WildAnimalsAPI.Controllers
             {
                 return BadRequest();
             }
+
+            //if (data.Animals == null)
+            //{
+            //    data.Animals = new ICollection<Animal>();
+            //}
+            //Continent newContinentMapped = _Mapper.Map<Continent>(data);
+
+            var animalContient = new AnimalContinent();
+
+            data.Animals.Add(animalContient);
 
             _DbContext.Continents.Add(data);
             await _DbContext.SaveChangesAsync();

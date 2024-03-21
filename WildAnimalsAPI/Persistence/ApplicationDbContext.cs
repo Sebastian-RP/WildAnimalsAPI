@@ -13,18 +13,22 @@ namespace WildAnimalsAPI.Persistence
         public DbSet<User> Users { get; set; }
         public DbSet<Animal> Animals { get; set; }
         public DbSet<Continent> Continents { get; set; }
+        public DbSet<AnimalContinent> AnimalContinents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Animal>()
-                .HasMany(a => a.AnimalContinentMappings)
-                .WithOne(acm => acm.Animal)
-                .HasForeignKey(acm => acm.AnimalId);
+            modelBuilder.Entity<AnimalContinent>()
+                .HasKey(ac => new { ac.AnimalId, ac.ContinentId });
 
-            modelBuilder.Entity<Continent>()
-                .HasMany(c => c.AnimalContinentMappings)
-                .WithOne(acm => acm.Continent)
-                .HasForeignKey(acm => acm.ContinentId);
+            //modelBuilder.Entity<AnimalContinent>()
+            //    .HasOne(ac => ac.Animal)
+            //    .WithMany(a => a.Continents)
+            //    .HasForeignKey(ac => ac.AnimalId);
+
+            //modelBuilder.Entity<AnimalContinent>()
+            //    .HasOne(ac => ac.Continent)
+            //    .WithMany(c => c.Animals)
+            //    .HasForeignKey(ac => ac.ContinentId);
         }
     }
 }
