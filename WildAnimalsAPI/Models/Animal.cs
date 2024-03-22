@@ -17,6 +17,6 @@
         public int AverageLifespanMax { get; set; }
         public string Diet { get; set; }
 
-        public ICollection<AnimalContinent> Continents { get; set; } = new List<AnimalContinent>();
+        public ICollection<AnimalContinent> AnimalContinents { get; set; } = new List<AnimalContinent>();
     }
 }

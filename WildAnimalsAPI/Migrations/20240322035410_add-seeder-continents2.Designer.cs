@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WildAnimalsAPI.Persistence;
 
@@ -10,9 +11,11 @@ using WildAnimalsAPI.Persistence;
 namespace WildAnimalsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240322035410_add-seeder-continents2")]
+    partial class addseedercontinents2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -200,13 +203,13 @@ namespace WildAnimalsAPI.Migrations
             modelBuilder.Entity("WildAnimalsAPI.Models.AnimalContinent", b =>
                 {
                     b.HasOne("WildAnimalsAPI.Models.Animal", "Animal")
-                        .WithMany("AnimalContinents")
+                        .WithMany("Continents")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WildAnimalsAPI.Models.Continent", "Continent")
-                        .WithMany("AnimalContinents")
+                        .WithMany("Animals")
                         .HasForeignKey("ContinentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,12 +221,12 @@ namespace WildAnimalsAPI.Migrations
 
             modelBuilder.Entity("WildAnimalsAPI.Models.Animal", b =>
                 {
-                    b.Navigation("AnimalContinents");
+                    b.Navigation("Continents");
                 });
 
             modelBuilder.Entity("WildAnimalsAPI.Models.Continent", b =>
                 {
-                    b.Navigation("AnimalContinents");
+                    b.Navigation("Animals");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int Population { get; set; }
-        public int SurfaceKm2 { get; set; }
+        public long Population { get; set; }
+        public long SurfaceKm2 { get; set; }
 
-        public ICollection<AnimalContinent> Animals { get; set; } = new List<AnimalContinent>();
+        public ICollection<AnimalContinent> AnimalContinents { get; set; } = new List<AnimalContinent>();
     }
 }

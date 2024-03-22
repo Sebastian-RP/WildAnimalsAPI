@@ -17,8 +17,7 @@ namespace WildAnimalsAPI.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AnimalContinent>()
-                .HasKey(ac => new { ac.AnimalId, ac.ContinentId });
+            modelBuilder.Entity<AnimalContinent>().HasKey(ac => new { ac.AnimalId, ac.ContinentId });
 
             //modelBuilder.Entity<AnimalContinent>()
             //    .HasOne(ac => ac.Animal)
@@ -29,6 +28,9 @@ namespace WildAnimalsAPI.Persistence
             //    .HasOne(ac => ac.Continent)
             //    .WithMany(c => c.Animals)
             //    .HasForeignKey(ac => ac.ContinentId);
+
+            //Seed data
+            modelBuilder.ApplyConfiguration(new ContinentSeed());
         }
     }
 }
