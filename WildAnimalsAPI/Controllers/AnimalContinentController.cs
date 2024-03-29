@@ -25,21 +25,21 @@ namespace WildAnimalsAPI.Controllers
         {
 
         }
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AnimalContinent>>> Get()
-        {
-            List<AnimalContinent> continents = await _DbContext.AnimalContinents.ToListAsync();
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<AnimalContinent>>> Get()
+        //{
+        //    List<AnimalContinent> continents = await _DbContext.AnimalContinents.ToListAsync();
 
-            return Ok(continents);
-        }
+        //    return Ok(continents);
+        //}
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<AnimalContinent>> Get(int id)
-        {
-            AnimalContinent continent = await _DbContext.AnimalContinents.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<AnimalContinent>> Get(int id)
+        //{
+        //    AnimalContinent continent = await _DbContext.AnimalContinents.FindAsync(id);
 
-            return Ok(continent);
-        }
+        //    return Ok(continent);
+        //}
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Animal animal)

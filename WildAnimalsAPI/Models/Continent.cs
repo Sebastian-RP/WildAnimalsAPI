@@ -6,7 +6,5 @@
         public string? Name { get; set; }
         public long Population { get; set; }
         public long SurfaceKm2 { get; set; }
-
-        public ICollection<AnimalContinent> AnimalContinents { get; set; } = new List<AnimalContinent>();
     }
 }
