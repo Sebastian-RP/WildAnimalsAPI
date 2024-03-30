@@ -11,7 +11,12 @@ namespace WildAnimalsAPI
         {
             CreateMap<CreateUserDto, User>().ReverseMap();
             CreateMap<SignInUser, User>().ReverseMap();
+            
             CreateMap<CreateContinentDto, Continent>().ReverseMap();
+            CreateMap<UpdateContinentDto, Continent>().ReverseMap();
+
+            CreateMap<CreateAnimalDto, Animal>().ReverseMap();
+            CreateMap<UpdateAnimalDto, Animal>().ReverseMap();
         }
     }
 }
