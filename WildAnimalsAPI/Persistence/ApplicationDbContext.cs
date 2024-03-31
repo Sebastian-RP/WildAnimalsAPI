@@ -1,6 +1,7 @@
 ﻿using MarvelPersonalProject.Models;
 using Microsoft.EntityFrameworkCore;
 using WildAnimalsAPI.Models;
+using WildAnimalsAPI.Persistence.Seeders;
 
 namespace WildAnimalsAPI.Persistence
 {
@@ -18,6 +19,7 @@ namespace WildAnimalsAPI.Persistence
         {
             //Seed data
             modelBuilder.ApplyConfiguration(new ContinentSeed());
+            modelBuilder.ApplyConfiguration(new AnimalSeed());
         }
     }
 }

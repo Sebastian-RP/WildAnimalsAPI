@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WildAnimalsAPI.Models;
 
-namespace WildAnimalsAPI.Persistence
+namespace WildAnimalsAPI.Persistence.Seeders
 {
     public class ContinentSeed : IEntityTypeConfiguration<Continent>
     {
