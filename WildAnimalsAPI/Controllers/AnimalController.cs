@@ -9,7 +9,7 @@ using WildAnimalsAPI.Persistence;
 namespace WildAnimalsAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class AnimalController : ControllerBase
     {
